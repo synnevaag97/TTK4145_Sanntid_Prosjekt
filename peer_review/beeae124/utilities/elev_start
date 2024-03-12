@@ -1,0 +1,74 @@
+#!/bin/bash
+#This script should be started from /project-group-[REDACTED]-1/utilities with following command:
+#./elev_start
+
+
+echo "Starting up"
+
+tmux new-session -d -s elevbash
+
+#Window 1
+tmux send-keys -t elevbash "cd ~/Desktop/project-group-[REDACTED]-1" Enter
+tmux send-keys "killall elevatorserver" Enter
+tmux send-keys "clear" Enter
+tmux send-keys "elevatorserver" Enter
+
+
+tmux split-window -v -t elevbash
+tmux select-pane -U
+tmux split-window -h -p 66 -t elevbash
+tmux select-pane -D
+
+
+#Window 2
+tmux send-keys -t elevbash "cd ~/Desktop/project-group-[REDACTED]-1" Enter
+tmux send-keys "sleep 2" Enter
+tmux send-keys "go build" Enter
+tmux send-keys "./Elevator '15657' '-9'" Enter
+#Format:        ./Elevator 'Port' 'ID'
+
+tmux split-window -h -p 66 -t elevbash
+tmux select-pane -U
+
+
+#Window 3
+tmux send-keys -t elevbash "cd ~/Desktop/project-group-[REDACTED]-1/utilities/Simulator-v2-1.5" Enter
+tmux send-keys "killall SimElevatorServer" Enter
+tmux send-keys "./SimElevatorServer --port 15659" Enter
+
+
+tmux split-window -h -t elevbash
+tmux select-pane -L
+tmux select-pane -D
+
+
+#Window 4
+tmux send-keys -t elevbash "cd ~/Desktop/project-group-[REDACTED]-1" Enter
+tmux send-keys "sleep 2" Enter
+tmux send-keys "go build" Enter
+tmux send-keys "./Elevator '15659' '-10'" Enter
+
+
+tmux split-window -h -t elevbash
+tmux select-pane -U
+
+
+#Window 5
+tmux send-keys -t elevbash "cd ~/Desktop/project-group-[REDACTED]-1/utilities/Simulator-v2-1.5" Enter
+tmux send-keys "./SimElevatorServer --port 15658" Enter
+
+
+tmux select-pane -D
+
+
+#Window 6
+tmux send-keys -t elevbash "cd ~/Desktop/project-group-[REDACTED]-1" Enter
+tmux send-keys "sleep 2" Enter
+tmux send-keys "go build" Enter
+tmux send-keys "./Elevator '15658' '-8'" Enter
+
+
+
+tmux attach -t elevbash
+
+#Kill elevbash: ctrl+d    or    tmux kill-session -t elevbash

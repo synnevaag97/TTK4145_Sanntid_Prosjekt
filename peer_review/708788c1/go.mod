@@ -1,0 +1,3 @@
+module PROJECT-GROUP-[REDACTED]
+
+go 1.16
